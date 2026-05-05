@@ -1,10 +1,7 @@
 providers = ["node"]
 
-[phases.setup]
-only_include_files = ["package.json"]
-
 [phases.install]
-cmds = ["npm install"]
+only_include_files = ["package.json", "package-lock.json"]
 
 [phases.build]
-cmds = ["echo 'Build skipped - using pre-built dist'"]
+cmds = ["echo skip"]
