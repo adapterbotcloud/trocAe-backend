@@ -1,7 +1,13 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import Fastify, { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import fastifyJwt from '@fastify/jwt';
 import fastifyCors from '@fastify/cors';
 import { PrismaClient } from '@prisma/client';
+import { authRoutes } from './routes/auth.js';
+import { userRoutes } from './routes/users.js';
+import { albumRoutes } from './routes/albums.js';
+import { inventoryRoutes } from './routes/inventory.js';
+import { tradeRoutes } from './routes/trades.js';
+import { chatRoutes } from './routes/chats.js';
 
 export const prisma = new PrismaClient();
 
@@ -14,14 +20,7 @@ export async function buildApp(): Promise<FastifyInstance> {
   // Health check
   app.get('/health', async () => ({ status: 'ok', timestamp: new Date().toISOString() }));
 
-  // Import and register routes
-  const { authRoutes } = await import('./routes/auth.js');
-  const { userRoutes } = await import('./routes/users.js');
-  const { albumRoutes } = await import('./routes/albums.js');
-  const { inventoryRoutes } = await import('./routes/inventory.js');
-  const { tradeRoutes } = await import('./routes/trades.js');
-  const { chatRoutes } = await import('./routes/chats.js');
-
+  // Register routes
   await app.register(authRoutes, { prefix: '/auth' });
   await app.register(userRoutes, { prefix: '/users' });
   await app.register(albumRoutes, { prefix: '/albums' });
@@ -30,14 +29,4 @@ export async function buildApp(): Promise<FastifyInstance> {
   await app.register(chatRoutes, { prefix: '/chats' });
 
   return app;
-}
-
-export function authenticate(app: FastifyInstance) {
-  return async function (request: FastifyRequest, reply: FastifyReply) {
-    try {
-      await request.jwtVerify();
-    } catch {
-      reply.status(401).send({ error: 'Unauthorized' });
-    }
-  };
 }

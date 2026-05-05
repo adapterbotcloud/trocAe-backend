@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify';
-import { prisma, InventoryStatus } from '../db/index.js';
+import { prisma } from '../db/index';
+import type { InventoryStatus } from '@prisma/client';
 
 export async function inventoryRoutes(app: FastifyInstance) {
   // GET /inventory — get all 3 lists for the authenticated user

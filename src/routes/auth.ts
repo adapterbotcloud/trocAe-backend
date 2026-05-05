@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import bcrypt from 'bcrypt';
-import { prisma } from '../db/index.js';
+import { prisma } from '../db/index';
 import { z } from 'zod';
 
 const registerSchema = z.object({

@@ -1,7 +1,0 @@
-providers = ["node"]
-
-[phases.install]
-only_include_files = ["package.json", "package-lock.json"]
-
-[phases.build]
-cmds = ["echo skip"]

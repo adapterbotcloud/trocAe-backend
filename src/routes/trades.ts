@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify';
-import { prisma, TradeStatus } from '../db/index.js';
+import { prisma } from '../db/index';
+import type { TradeStatus } from '@prisma/client';
 import { z } from 'zod';
 
 const findTradesSchema = z.object({

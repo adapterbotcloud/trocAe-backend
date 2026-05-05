@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { prisma } from '../db/index.js';
+import { prisma } from '../db/index';
 
 export async function albumRoutes(app: FastifyInstance) {
   // GET /albums
