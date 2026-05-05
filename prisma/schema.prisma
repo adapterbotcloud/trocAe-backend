@@ -1,0 +1,168 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  whatsapp     String?
+  lat          Float?
+  lng          Float?
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  inventory      Inventory[]
+  proposedTrades Trade[]     @relation("Proposer")
+  receivedTrades Trade[]     @relation("Receiver")
+  sentMessages   Message[]
+  chatsAsUser1   Chat[]      @relation("ChatUser1")
+  chatsAsUser2   Chat[]      @relation("ChatUser2")
+  TradeItem      TradeItem[]
+
+  @@map("users")
+}
+
+model Album {
+  id              String   @id @default(uuid())
+  name            String
+  totalFigurinhas Int      @map("total_figurinhas")
+  coverUrl        String?  @map("cover_url")
+  isDefault       Boolean  @default(false) @map("is_default")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  categories Category[]
+  figurinhas Figurinha[]
+
+  @@map("albums")
+}
+
+model Category {
+  id      String @id @default(uuid())
+  albumId String @map("album_id")
+  name    String
+
+  album      Album       @relation(fields: [albumId], references: [id])
+  figurinhas Figurinha[]
+
+  @@map("categories")
+}
+
+model Figurinha {
+  id         String   @id @default(uuid())
+  albumId    String   @map("album_id")
+  numero     String
+  nome       String
+  imagemUrl  String?  @map("imagem_url")
+  categoryId String?  @map("category_id")
+  raridade   Raridade @default(COMUM)
+
+  album     Album       @relation(fields: [albumId], references: [id])
+  category  Category?   @relation(fields: [categoryId], references: [id])
+  inventory Inventory[]
+  TradeItem TradeItem[]
+
+  @@unique([albumId, numero])
+  @@map("figurinhas")
+}
+
+enum Raridade {
+  COMUM
+  RARA
+  ULTRA_RARA
+}
+
+model Inventory {
+  id          String          @id @default(uuid())
+  userId      String          @map("user_id")
+  figurinhaId String          @map("figurinha_id")
+  quantity    Int             @default(1)
+  status      InventoryStatus @default(TENHO)
+
+  user       User        @relation(fields: [userId], references: [id])
+  figurinha  Figurinha   @relation(fields: [figurinhaId], references: [id])
+  tradeItems TradeItem[]
+
+  @@unique([userId, figurinhaId])
+  @@map("inventory")
+}
+
+enum InventoryStatus {
+  TENHO
+  FALTANTE
+  REPETIDA
+}
+
+model Trade {
+  id         String      @id @default(uuid())
+  proposerId String      @map("proposer_id")
+  receiverId String      @map("receiver_id")
+  status     TradeStatus @default(PENDENTE)
+  createdAt  DateTime    @default(now()) @map("created_at")
+
+  proposer   User        @relation("Proposer", fields: [proposerId], references: [id])
+  receiver   User        @relation("Receiver", fields: [receiverId], references: [id])
+  tradeItems TradeItem[]
+
+  @@map("trades")
+}
+
+enum TradeStatus {
+  PENDENTE
+  ACEITA
+  REJEITADA
+  CANCELADA
+}
+
+model TradeItem {
+  id          String         @id @default(uuid())
+  tradeId     String         @map("trade_id")
+  userId      String         @map("user_id")
+  figurinhaId String         @map("figurinha_id")
+  direction   TradeDirection
+
+  trade       Trade      @relation(fields: [tradeId], references: [id])
+  user        User       @relation(fields: [userId], references: [id])
+  figurinha   Figurinha  @relation(fields: [figurinhaId], references: [id])
+  Inventory   Inventory? @relation(fields: [inventoryId], references: [id])
+  inventoryId String?
+
+  @@map("trade_items")
+}
+
+enum TradeDirection {
+  OFFER
+  REQUEST
+}
+
+model Chat {
+  id        String   @id @default(uuid())
+  user1Id   String   @map("user1_id")
+  user2Id   String   @map("user2_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user1    User      @relation("ChatUser1", fields: [user1Id], references: [id])
+  user2    User      @relation("ChatUser2", fields: [user2Id], references: [id])
+  messages Message[]
+
+  @@unique([user1Id, user2Id])
+  @@map("chats")
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  chatId    String   @map("chat_id")
+  senderId  String   @map("sender_id")
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  chat   Chat @relation(fields: [chatId], references: [id])
+  sender User @relation(fields: [senderId], references: [id])
+
+  @@map("messages")
+}

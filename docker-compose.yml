@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgresql://trocae:trocAe2026@trocae-postgres:5432/trocAe_db
+      JWT_SECRET: trocae-jwt-secret-change-in-production
+      PORT: "3001"
+    networks:
+      - trocAe-net
+    restart: unless-stopped
+
+networks:
+  trocAe-net:
+    external: true
