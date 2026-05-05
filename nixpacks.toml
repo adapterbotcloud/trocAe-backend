@@ -1,0 +1,14 @@
+providers = ["node"]
+
+[node]
+version = "22"
+
+[phases.setup]
+only_include_files = ["package.json", "package-lock.json"]
+
+[phases.install]
+only_include_files = ["package.json", "package-lock.json"]
+
+[phases.build]
+cmds = ["echo 'Build skipped - dist/ pre-built'"]
+only_include_files = ["dist/", "node_modules/"]
