@@ -1,0 +1,10 @@
+providers = ["node"]
+
+[phases.setup]
+only_include_files = ["package.json"]
+
+[phases.install]
+cmds = ["npm install"]
+
+[phases.build]
+cmds = ["echo 'Build skipped - using pre-built dist'"]
