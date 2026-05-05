@@ -1,1 +1,1 @@
-{"version":3,"file":"inventory.d.ts","sourceRoot":"","sources":["../../src/routes/inventory.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,SAAS,CAAC;AAG1C,wBAAsB,eAAe,CAAC,GAAG,EAAE,eAAe,iBA4EzD"}
+{"version":3,"file":"inventory.d.ts","sourceRoot":"","sources":["../../src/routes/inventory.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,SAAS,CAAC;AAI1C,wBAAsB,eAAe,CAAC,GAAG,EAAE,eAAe,iBA4EzD"}
