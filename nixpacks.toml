@@ -1,8 +1,10 @@
+providers = ["node"]
+
 [phases.setup]
 only_include_files = ["package.json"]
 
 [phases.install]
-ONLY_INCLUDE_FILES = ["package.json", "package-lock.json"]
+only_include_files = ["package.json", "package-lock.json"]
 
 [phases.build]
 cmds = ["npx prisma generate"]
