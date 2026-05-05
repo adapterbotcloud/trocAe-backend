@@ -95,7 +95,7 @@ export async function tradeRoutes(app: FastifyInstance) {
     }> = [];
 
     // Group by other user
-    const otherUsersMap: any = new Map();
+    const otherUsersMap = new Map<string, typeof othersWithMyWants[0] & typeof othersWantMyRepetidas[0]>();
 
     for (const item of othersWithMyWants) {
       const existing = otherUsersMap.get(item.user.id) || {} as typeof item;

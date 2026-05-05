@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Raridade, InventoryStatus, TradeStatus } from '@prisma/client';
 
-export { Raridade } from '@prisma/client';
+export { Raridade, InventoryStatus, TradeStatus };
 
 export interface JwtPayload {
   id: string;
@@ -13,6 +13,14 @@ export interface AuthenticatedRequest extends FastifyRequest {
 }
 
 export type FastifyInstanceWithPlugins = FastifyInstance;
+
+export interface FigurinhaWithCategory extends Figurinha {
+  category?: Category | null;
+}
+
+export interface InventoryWithFigurinha extends Inventory {
+  figurinha: Figurinha;
+}
 
 export interface TradeMatch {
   type: 'PERFEITA' | 'PARCIAL' | 'GRUPO';
