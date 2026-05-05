@@ -6,7 +6,7 @@ services:
     ports:
       - "3001:3001"
     environment:
-      DATABASE_URL: postgresql://trocae:trocAe2026@trocae-postgres:5432/trocAe_db
+      DATABASE_URL: postgresql://trocAe:trocAe2026@trocae-postgres:5432/trocAe_db
       JWT_SECRET: trocae-jwt-secret-change-in-production
       PORT: "3001"
     networks:

@@ -1,4 +1,4 @@
-import { FastifyInstance } from 'fastify';
+import Fastify, { FastifyInstance } from 'fastify';
 import fastifyJwt from '@fastify/jwt';
 import fastifyCors from '@fastify/cors';
 import { PrismaClient } from '@prisma/client';

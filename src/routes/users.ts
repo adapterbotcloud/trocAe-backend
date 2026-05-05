@@ -42,4 +42,28 @@ export async function userRoutes(app: FastifyInstance) {
 
     return reply.send(user);
   });
+
+  // PUT /users/me (generic - name and whatsapp)
+  app.put<{ Body: { name?: string; whatsapp?: string } }>('/me', async (request, reply) => {
+    try {
+      await request.jwtVerify();
+    } catch {
+      return reply.status(401).send({ error: 'Unauthorized' });
+    }
+
+    const payload = request.user as { id: string; email: string };
+    const { name, whatsapp } = request.body as { name?: string; whatsapp?: string };
+
+    const updateData: { name?: string; whatsapp?: string | null } = {};
+    if (name !== undefined) updateData.name = name;
+    if (whatsapp !== undefined) updateData.whatsapp = whatsapp || null;
+
+    const user = await prisma.user.update({
+      where: { id: payload.id },
+      data: updateData,
+      select: { id: true, name: true, email: true, whatsapp: true },
+    });
+
+    return reply.send(user);
+  });
 }
